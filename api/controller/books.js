@@ -96,3 +96,32 @@ exports.GetBook_usingBookId = async (req, res, next) => {
         })
     }
 };
+
+exports.DeleteBook_usingBookId = async (req, res, next) => {
+    try{
+        await Book.deleteOne({_id: req.params.bookId}).exec();
+
+        await res.status(200).json({
+            status:200,
+            message: `Book ${req.params.bookId} removed from store`,
+            request: {
+                type: 'POST',
+                url: 'localhost:3000/books',
+                body:{
+                    title: '<String>',
+                    author: 'String>',
+                    version: '<String>',
+                    price: '<Number>',
+                    year: '<YYYY: Number>',
+                    genre: '<[<object>] Array'
+                }
+            }
+        })
+    }
+    catch(err){
+        res.status(500).json({
+            message: 500,
+            error: err
+        })
+    }
+}

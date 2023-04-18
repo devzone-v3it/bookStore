@@ -11,5 +11,7 @@ router.post('/', bookCtrl.CreateNewBook);
 
 router.get('/:bookId', bookCtrl.GetBook_usingBookId);
 
+router.delete('/:bookId', bookCtrl.DeleteBook_usingBookId);
+
 
 module.exports = router
