@@ -16,4 +16,6 @@ const sectionSchema = mongoose.Schema({
         type: Number,
         required: true
     }
-})
+});
+
+module.exports = mongoose.model('Section', sectionSchema);
