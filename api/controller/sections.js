@@ -1,14 +1,62 @@
 const Section = require('../models/sections');
+const Book = require('../models/books');
+const mongoose = require('mongoose');
 
-exports.CreateNewSection = (req, res, next) =>{
+exports.CreateNewSection = async (req, res, next) =>{
     try{
+        const section = await Section.findOne({sectionCode: req.params.sectionCode}).exec();
 
+        if(!section){
+            const book = await Book.findOne({_id: req.body.bookId}).exec();
+
+            if(book){
+                const newSection = new Section({
+                    _id: new mongoose.Types.ObjectId(),
+                    sectionCode: req.body.sectionCode,
+                    book: req.body.bookId,
+                    quantity: req.body.quantity
+                });
+
+                await newSection.save();
+
+                await res.status(201).json({
+                    status: 201,
+                    message: `New section ${newSection._id} has been added to the store with quantity of ${newSection.quantity} books`,
+                    request: {
+                        type: 'GET',
+                        url: '/books/'+ newSection.book
+                    }
+                });
+            }
+            else{
+                res.status(404).json({
+                    status: 404,
+                    message: 'New section could not be added as the corresponding book does not exist.',
+                    request:{
+                        doc: 'add new books using below params',
+                        type: 'POST',
+                        url: '/books/'+ req.body.bookId
+                    }
+                })
+            }
+        }
+        else{
+            res.status(404).json({
+                status: 404,
+                message: 'New section could not be added as the corresponding book does not exist.',
+                request: {
+                    doc: 'Get list of all secions',
+                    type: 'GET',
+                    url: '/sections'
+                }
+            });
+        }
     }
     catch(err){
         console.log(err);
         res.status(500).json({
             status:500,
-            error: err
+            error: err + " in POST /sections"
         })
     }
 }

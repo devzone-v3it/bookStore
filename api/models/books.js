@@ -7,11 +7,11 @@ const bookSchema = mongoose.Schema({
         required: true
     },
     author: {
-        type: String
+        type: String,
+        required: true
     },
     version: {
         type: String,
-        required: true,
         default: "1.0"
     },
     pub_year: {

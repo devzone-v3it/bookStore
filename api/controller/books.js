@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-
 const Book = require('../models/books');
 
+// Get All Books using GET method
 exports.GetBooksAll = async (req, res, next) => {
     try{
         const books =  await Book.find().exec();
@@ -33,6 +33,7 @@ exports.GetBooksAll = async (req, res, next) => {
     }
 };
 
+// Create new Book Object using POST method
 exports.CreateNewBook = async (req, res, next) =>{
 
     const newBook = new Book({
@@ -86,6 +87,7 @@ exports.CreateNewBook = async (req, res, next) =>{
     }
 };
 
+// Get a book using its BookID using GET method
 exports.GetBook_usingBookId = async (req, res, next) => {
     try{
         const book = await Book.findOne({_id: req.params.bookId}).exec();
@@ -113,6 +115,7 @@ exports.GetBook_usingBookId = async (req, res, next) => {
     }
 };
 
+// Update structure of Book object using PUT method
 exports.UpdateBook_usingBookId = async (req, res, next) => {
 
     try{
@@ -139,6 +142,7 @@ exports.UpdateBook_usingBookId = async (req, res, next) => {
     }
 } 
 
+// Delete Book object returned by its BookID using DELETE method
 exports.DeleteBook_usingBookId = async (req, res, next) => {
     try{
         const book = await Book.findOne({_id: req.params.bookId}).exec();
