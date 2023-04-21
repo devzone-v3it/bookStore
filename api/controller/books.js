@@ -119,12 +119,12 @@ exports.GetBook_usingBookId = async (req, res, next) => {
 exports.UpdateBook_usingBookId = async (req, res, next) => {
 
     try{
-        const book = await Book.findOneAndUpdate({_id: req.params.bookId}, req.body);
+        let book = await Book.findOneAndUpdate({_id: req.params.bookId}, req.body).exec();
+        console.log(book);
         if(book){
             res.status(200).json({
                 status:200,
-                updatedRecord: book,
-                parameters: req.body
+                updatedProps: req.body
             })
         }
         else{

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/users');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 exports.Signup_user = async(req, res, next) => {
     try{
@@ -55,9 +56,16 @@ exports.Login_user = async (req, res, next) => {
         const user = await User.findOne({$or: [{email: req.body.email}, {username: req.body.username}]}).exec();
 
         if (user && user.password === crypto.createHash('sha256', process.env.SECRET_KEY).update(req.body.password).digest('hex')){
+
+            const secure_jwt_token = jwt.sign({
+                email: user.email
+            }, process.env.JWT_SECRET_KEY, {
+                expiresIn: "1h"
+            })
             res.status(200).json({
                 status: 200,
-                message: 'Successfully logged in'
+                message: 'Successfully logged in', 
+                token: secure_jwt_token
             })
         }
         else{

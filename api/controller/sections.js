@@ -111,4 +111,46 @@ exports.GetSection_usingSectionId = async (req, res, next) => {
             error: err
         })
     }
+};
+
+exports.DeleteSection_usingSectionId = async (req, res, next) => {
+    try{
+        const section = await Section.findOne({_id: req.params.sectionId}).exec();
+        if(section){
+            await Section.deleteOne({_id: req.params.sectionId}).exec();
+
+            res.status(204).json({
+                status: 204,
+                message: "Section deleted successfully.",
+                request: {
+                    type: "POST",
+                    url: "/sections",
+                    params: {
+                        sectionCode: "<String>",
+                        bookId: "<string>",
+                        quantity: "<Number>"
+                    },
+                    doc: "To create new section"
+                }
+            })
+        }
+        else{   
+            res.status(404).json({
+                status:404,
+                message: "Section you want to delete does not exist",
+                request: {
+                    doc: "To get _id, please search the below path",
+                    type: 'GET',
+                    url: "/sections"
+                }
+            })
+
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            status: 500,
+            message: err + " in DELETE /sections"
+        })
+    }
 }
