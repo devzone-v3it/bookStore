@@ -8,3 +8,10 @@ use below JSON for POST /book
     "year": "",
     "genre": [""]
 }
+
+use below JSON for POST /section
+{
+    "sectionCode": "",
+    "bookId": "<Object ID for book>",
+    "quantity": "<Number>"
+}

@@ -16,9 +16,11 @@ app.use(express.json());
 // routes
 const bookRoutes = require('./api/routes/books');
 const sectionRoutes = require('./api/routes/sections');
+const userRoutes = require('./api/routes/users');
 
 app.use('/books', bookRoutes);
 app.use('/sections', sectionRoutes);
+app.use('/user', userRoutes);
 
 app.use((req, res, next)=>{
     const error = new Error('Not found');
